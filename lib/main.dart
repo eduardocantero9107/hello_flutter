@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'screens/catalogo_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,39 +34,27 @@ class HomeScreen extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-
-          // Imagen de fondo
           Image.asset(
             'assets/images/fondo_peliculas.jpg',
             fit: BoxFit.cover,
           ),
-
-          // Capa oscura para mejorar la lectura
           Container(
             color: Colors.black.withValues(alpha: 0.65),
           ),
-
-          // Contenido de la pantalla
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
-
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-
-                    // Icono de películas
                     const Icon(
                       Icons.movie_creation_outlined,
                       size: 85,
                       color: Colors.white,
                     ),
-
                     const SizedBox(height: 20),
-
-                    // Nombre de la aplicación
                     const Text(
                       'CATÁLOGO DE PELÍCULAS',
                       textAlign: TextAlign.center,
@@ -77,10 +65,7 @@ class HomeScreen extends StatelessWidget {
                         letterSpacing: 1.5,
                       ),
                     ),
-
                     const SizedBox(height: 35),
-
-                    // Mensaje de bienvenida
                     const Text(
                       '¡Bienvenido!',
                       style: TextStyle(
@@ -89,10 +74,7 @@ class HomeScreen extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
-
                     const SizedBox(height: 12),
-
-                    // Texto solicitado en la actividad
                     const Text(
                       'Hello World',
                       style: TextStyle(
@@ -100,10 +82,7 @@ class HomeScreen extends StatelessWidget {
                         color: Colors.white70,
                       ),
                     ),
-
                     const SizedBox(height: 15),
-
-                    // Descripción de la aplicación
                     const Text(
                       'Descubre y disfruta de las mejores '
                       'películas en un solo lugar',
@@ -114,20 +93,17 @@ class HomeScreen extends StatelessWidget {
                         height: 1.5,
                       ),
                     ),
-
                     const SizedBox(height: 40),
-
-                    // Botón Iniciar sesión
                     SizedBox(
                       width: 250,
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                'Pantalla de inicio de sesión',
-                              ),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const CatalogoScreen(),
                             ),
                           );
                         },
@@ -138,16 +114,14 @@ class HomeScreen extends StatelessWidget {
                         child: const Text('Iniciar sesión'),
                       ),
                     ),
-
                     const SizedBox(height: 15),
-
-                    // Botón Registrarse
                     SizedBox(
                       width: 250,
                       height: 50,
                       child: OutlinedButton(
                         onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(
                             const SnackBar(
                               content: Text(
                                 'Pantalla de registro',
@@ -174,4 +148,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
