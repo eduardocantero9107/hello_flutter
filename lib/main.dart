@@ -1,7 +1,20 @@
-import 'package:flutter/material.dart';
-import 'screens/catalogo_screen.dart';
 
-void main() {
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+
+import 'firebase_options.dart';
+import 'screens/catalogo_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/registro_screen.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
@@ -20,7 +33,36 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
       ),
-      home: const HomeScreen(),
+      home: const AuthGate(),
+    );
+  }
+}
+
+// Controla el acceso según el estado de autenticación.
+class AuthGate extends StatelessWidget {
+  const AuthGate({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+
+        final usuario = snapshot.data;
+
+        if (usuario != null && !usuario.isAnonymous) {
+          return const CatalogoScreen();
+        }
+
+        return const HomeScreen();
+      },
     );
   }
 }
@@ -94,6 +136,8 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 40),
+
+                    // Botón para iniciar sesión.
                     SizedBox(
                       width: 250,
                       height: 50,
@@ -103,7 +147,7 @@ class HomeScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  const CatalogoScreen(),
+                                  const LoginScreen(),
                             ),
                           );
                         },
@@ -115,17 +159,18 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 15),
+
+                    // Botón para registrar una cuenta.
                     SizedBox(
                       width: 250,
                       height: 50,
                       child: OutlinedButton(
                         onPressed: () {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                'Pantalla de registro',
-                              ),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const RegistroScreen(),
                             ),
                           );
                         },

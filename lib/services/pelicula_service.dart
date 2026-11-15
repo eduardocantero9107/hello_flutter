@@ -1,18 +1,20 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 import '../models/pelicula.dart';
 
 class PeliculaService {
-  static const String _accessToken =
-      String.fromEnvironment('TMDB_ACCESS_TOKEN');
+  // Token de acceso de TMDB.
+  static const String _accessToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxN2RjNDk3ODg4MWUxMDg2NWJlNmY0NjllZTE5MGQ1YyIsIm5iZiI6MTc5NDI3NTU1NC4zOTkwMDAyLCJzdWIiOiI2YWYyNzhlMmE2ZGUyZTYwMDE2MGQ1YjAiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.ubApckXOnj75qAa7jMpW8PK87T8divrEXVYP4vsMbx0';
 
   Future<List<Pelicula>> obtenerPeliculasPopulares() async {
-    if (_accessToken.isEmpty) {
-      throw Exception(
-        'No se ha configurado el token de TMDB.',
-      );
-    }
+    
+if (_accessToken.trim().isEmpty) {
+  throw Exception(
+    'No se ha configurado el token de TMDB.',
+  );
+}
 
     final url = Uri.https(
       'api.themoviedb.org',
